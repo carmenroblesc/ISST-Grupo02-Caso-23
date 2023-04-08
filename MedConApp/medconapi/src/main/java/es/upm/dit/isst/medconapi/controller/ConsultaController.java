@@ -101,4 +101,13 @@ public class ConsultaController {
         consultaRepository.deleteById(id);
         return ResponseEntity.ok().body(null);
     }
+     // pone el status a 3 y finaliza la consulta
+    @PostMapping("/consultas/{id}/finaliza")
+    ResponseEntity<Consulta> finaliza(@PathVariable Long id) {
+      return consultaRepository.findById(id).map(consulta -> {
+        consulta.setStatus(3);
+        consultaRepository.save(consulta);
+        return ResponseEntity.ok().body(consulta);
+      }).orElse(new ResponseEntity<Consulta>(HttpStatus.NOT_FOUND));  
+    }
 }
