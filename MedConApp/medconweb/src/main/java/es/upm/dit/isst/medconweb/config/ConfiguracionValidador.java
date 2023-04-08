@@ -1,4 +1,4 @@
-package es.upm.dit.isst.tfg.tfgwebapp.config;
+package es.upm.dit.isst.medconweb.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
