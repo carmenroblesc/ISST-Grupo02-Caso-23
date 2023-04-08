@@ -1,4 +1,22 @@
+
+
 .body{
-    background: #E0F2F7;
     text-align: center;
+    background: #E0F2F7;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
 }
+
+#historial {
+    margin-top: 20px;
+    margin-left: 300px;
+    margin-right: 300px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: justify;
+    background: #ffffff;
+  }
