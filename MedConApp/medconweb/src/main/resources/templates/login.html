@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-    <head>
-        <title>Inicio de sesión médico </title>
-    </head>
-    <body>
-        <form th:action="@{/login}" method="post">
-            <div><label> Nº de colegiado : <input type="text" name="colegiado"/> </label></div>
-            <div><input type="submit" value="Log In"/></div>
-        </form>
-    </body>
+      <head>
+        <link href="../static/css/css_login.css" rel="stylesheet" type="text/css" />
+        </head>
+      <div class="body"></div>
+      <div class="grad"></div>
+      <div class="header">
+          <div>Med<span>Con</span></div>
+      </div>
+      <br>
+      <div class="login">
+          <form th:action="@{/login}" method="post">
+              <div><input type="text" placeholder="Nº de Colegiado" name="user"><br></div>
+              <div></div><input type="button" value="Login"></div>
+          </form>
+      </div>
 </html>
