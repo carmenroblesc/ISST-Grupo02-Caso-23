@@ -15,8 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
-    public final String TFGMANAGER_STRING= //	env.getProperty ("tfgmanager.server") + "tfgs/";
-	"http://localhost:8083/tfgs/";
+    public final String MEDCONMANAGER_STRING = "http://localhost:8083/";
     
     @Override
     public Authentication authenticate(Authentication authentication) 
