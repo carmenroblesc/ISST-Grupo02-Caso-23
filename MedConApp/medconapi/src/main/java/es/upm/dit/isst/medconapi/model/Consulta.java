@@ -12,7 +12,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "citas")
+@Table(name = "consultas")
 public class Consulta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,8 +20,8 @@ public class Consulta {
     //para indicar si el paciente está esperando, en consulta o finalizado. 
     private int status;
     private Duration duracion;
-    private int sala_espera;
-    private int sala_consulta;
+    private int salaEspera;
+    private int salaConsulta;
     @ManyToOne
     @JoinColumn(name = "paciente_id")
     private Paciente paciente;
@@ -58,20 +58,20 @@ public class Consulta {
         this.duracion = duracion;
     }
 
-    public int getSala_espera() {
-        return sala_espera;
+    public int getSalaEspera() {
+        return salaEspera;
     }
 
-    public void setSala_espera(int sala_espera) {
-        this.sala_espera = sala_espera;
+    public void setSalaEspera(int salaEspera) {
+        this.salaEspera = salaEspera;
     }
 
-    public int getSala_consulta() {
-        return sala_consulta;
+    public int getSalaConsulta() {
+        return salaConsulta;
     }
 
-    public void setSala_consulta(int sala_consulta) {
-        this.sala_consulta = sala_consulta;
+    public void setSalaConsulta(int salaConsulta) {
+        this.salaConsulta = salaConsulta;
     }
 
     public Paciente getPaciente() {
@@ -97,5 +97,63 @@ public class Consulta {
     public void setCita(Cita cita) {
         this.cita = cita;
     }
-  
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + status;
+        result = prime * result + ((duracion == null) ? 0 : duracion.hashCode());
+        result = prime * result + salaEspera;
+        result = prime * result + salaConsulta;
+        result = prime * result + ((paciente == null) ? 0 : paciente.hashCode());
+        result = prime * result + ((medico == null) ? 0 : medico.hashCode());
+        result = prime * result + ((cita == null) ? 0 : cita.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Consulta other = (Consulta) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        if (status != other.status)
+            return false;
+        if (duracion == null) {
+            if (other.duracion != null)
+                return false;
+        } else if (!duracion.equals(other.duracion))
+            return false;
+        if (salaEspera != other.salaEspera)
+            return false;
+        if (salaConsulta != other.salaConsulta)
+            return false;
+        if (paciente == null) {
+            if (other.paciente != null)
+                return false;
+        } else if (!paciente.equals(other.paciente))
+            return false;
+        if (medico == null) {
+            if (other.medico != null)
+                return false;
+        } else if (!medico.equals(other.medico))
+            return false;
+        if (cita == null) {
+            if (other.cita != null)
+                return false;
+        } else if (!cita.equals(other.cita))
+            return false;
+        return true;
+    }
+ 
 }
