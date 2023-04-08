@@ -2,8 +2,6 @@ package es.upm.dit.isst.medconapi.controller;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.LocalTime;
-import java.util.Comparator;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -97,7 +95,7 @@ public class ConsultaController {
 
     // BORRAR
 
-    // borra una cita concreta
+    // borra una consulta concreta
     @DeleteMapping("/consultas/{id}")
     ResponseEntity<Consulta> delete(@PathVariable Long id) {
         consultaRepository.deleteById(id);

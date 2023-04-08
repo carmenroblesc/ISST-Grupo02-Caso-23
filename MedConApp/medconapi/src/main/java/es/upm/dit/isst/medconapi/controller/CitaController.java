@@ -62,6 +62,12 @@ public class CitaController {
         return ordenarCitasPorHora(citas);
     }
 
+    // devuelve la cita de un paciente 
+    @GetMapping("/citas/pacientes/{id}")
+    Cita readPaciente(@PathVariable String id) {
+      return (Cita) citaRepository.findByPaciente(id);
+    }
+
     //método auxliar para ordenar las citas por hora
     private List<Cita> ordenarCitasPorHora(List<Cita> citas) {
         Comparator<Cita> comparador = new Comparator<Cita>() {
