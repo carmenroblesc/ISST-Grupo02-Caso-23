@@ -9,19 +9,19 @@
 	<div class="container">
 		<div class="card bg-dark">
 			<div class="card-header">
-				<h3 th:text="#{tfgs.lista.titulo}"></h3>
+				<h3 th:text="#{citas.consulta.medico}"></h3>
 			</div>
 			<div class="card-body">
 				<table class="table table-striped">
 					<thead>
 						<tr>
-							<th th:text="#{tfgs.TFG.email}"></th>
-							<th th:text="#{tfgs.TFG.nombre}"></th>
-							<th th:text="#{tfgs.TFG.titulo}"></th>
-							<th th:text="#{tfgs.TFG.tutor}"></th>
+							<th th:text="#{citas.CITA.id}"></th>
+							<th th:text="#{citas.CITA.fecha}"></th>
+							<th th:text="#{citas.CITA.hora}"></th>
+							<th th:text="#{citas.CITA.paciente}"></th>
 							<span sec:authorize="isAuthenticated()">
-								<th th:text="#{tfgs.TFG.status}"></th>		
-								<th th:text="#{tfgs.TFG.memoria}"></th>
+								<th th:text="#{consulta.CONSULTA.status}"></th>		
+								<th th:text="#{consulta.CONSULTA.duracion}"></th>
 							</span>
 							<th>-</th>
 							<th>-</th>
@@ -30,40 +30,13 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:each="TFG: ${tfgs}">
-							<td th:text="${TFG.email}"></td>
-							<td th:text="${TFG.nombre}"></td>
-							<td th:text="${TFG.titulo}"></td>
-							<td th:text="${TFG.tutor}"></td>
-							<span sec:authorize="isAuthenticated()">
-								<td th:text="${TFG.status}"></td>
-								<td>
-									<form method="post" th:action="@{/upload}" th:object="${TFG}" enctype="multipart/form-data">
-										<div class="form-group">
-											<input type="hidden" th:value="${TFG.email}" name="email">
-											<input type="file" name="file" class="form-control-file">
-										<button type="submit" class="btn btn-outline-primary">Upload File</button>
-									</div></form>
-								</td>
-								<td><a th:href="@{download/} + ${TFG.email}" th:text="#{tfgs.acciones.memoria}" class="btn btn-outline-primary"></a>
-								</td>
-								<td>
-									<a th:href="@{editar/} + ${TFG.email}" th:text="#{tfgs.acciones.editar}" class="btn btn-outline-primary"></a>
-								</td><td>	
-									<a th:href="@{eliminar/} + ${TFG.email}" th:text="#{tfgs.acciones.eliminar}" class="btn btn-outline-danger"></a>
-								</td><td>
-									<a th:href="@{aceptar/} + ${TFG.email}" th:text="#{tfgs.acciones.aceptar}" class="btn btn-outline-danger"></a>
-								</td>
-							</span>
+						<tr th:each="CITA: ${citas}">
+							<td th:text="${CITA.fecha}"></td>
+							<td th:text="${CITA.hora}"></td>
+							<td th:text="${CITA.paciente}"></td>
+							<td th:text="${CITA.medico}"></td>
 						</tr>
 					</tbody>
-					<tfoot>
-						<tr>
-							<td colspan="5">
-								<a th:href="@{crear}" class="btn btn-outline-primary btn-block" th:text="#{tfgs.acciones.anadir}"></a>
-							</td>
-						</tr>
-					</tfoot>
 				</table>
 			</div>
 		</div>
