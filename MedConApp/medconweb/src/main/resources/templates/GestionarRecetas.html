@@ -2,26 +2,24 @@
 <html>
   <head>
     <title>Sistema de gestión de recetas médicas</title>
+    <link href="../static/css/css_recetas.css" rel="stylesheet" type="text/css" />
   </head>
-  <body>
+  <body class="body">
     <h1>Preescribir un medicamento:</h1>
-    <form>
-      <label for="nombre-paciente">CIPA del paciente:</label>
-      <input type="text" id="nombre-paciente" name="nombre-paciente" placeholder="Ingresar el CIPA del paciente"><br>
-
+    <form class="datos">
       <label for="nombre-medicamento">Nombre del medicamento:</label>
-      <input type="text" id="nombre-medicamento" name="nombre-medicamento" placeholder="Ingresar el nombre del medicamento"><br>
+      <input class="input" type="text" id="nombre-medicamento" name="nombre-medicamento" placeholder="Escribir el nombre del medicamento" ><br>
 
       <label for="dosis">Dosis:</label>
-      <input type="text" id="dosis" name="dosis" placeholder="Ingresar la dosis"><br>
+      <input type="text" id="dosis" name="dosis" placeholder="Escribir la dosis del medicamento"><br>
 
       <label for="frecuencia">Frecuencia:</label>
-      <input type="text" id="frecuencia" name="frecuencia" placeholder="Ingresar la frecuencia"><br>
+      <input class="input" type="text" id="frecuencia" name="frecuencia" placeholder="Escribir la frecuencia de uso"><br>
 
       <label for="instrucciones">Instrucciones de uso:</label>
-      <textarea id="instrucciones" name="instrucciones" placeholder="Ingresar las instrucciones de uso"></textarea><br>
+      <textarea class="instrucciones" id="instrucciones" name="instrucciones" placeholder="Escribir las instrucciones de uso"></textarea><br>
 
-      <input type="submit" value="Preescribir">
+      <input class="boton" type="submit" value="Preescribir">
     </form>
   </body>
 </html>
