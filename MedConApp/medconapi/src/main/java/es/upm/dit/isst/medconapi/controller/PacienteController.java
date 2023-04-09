@@ -69,7 +69,7 @@ public class PacienteController {
     }
     
     //actualiza el estado de un paciente (para registrar la llegada de un paciente)
-    @PostMapping("/paciente/{id}/registar")
+    @PostMapping("/pacientes/{id}/registrar")
     ResponseEntity<Paciente> registrar(@PathVariable String id) {
       return pacienteRepository.findById(id).map(paciente -> {
         paciente.setPresente(true);
@@ -79,7 +79,7 @@ public class PacienteController {
     }
     
     //actualiza el identificador de espera de un paciente (se lo asigna)
-    @PostMapping("/paciente/{id}/asignarIdEspera")
+    @PostMapping("/pacientes/{id}/asignarIdEspera")
     ResponseEntity<Paciente> asignarIdEspera(@PathVariable String id) {
       return pacienteRepository.findById(id).map(paciente -> {
         String idEspera = asignarIdentificador(paciente);
