@@ -34,7 +34,7 @@ public class MedicoController {
     @PostMapping("/medicos")
     ResponseEntity<Medico> create(@RequestBody Medico newMedico) throws URISyntaxException {
       Medico result = medicoRepository.save(newMedico);
-      return ResponseEntity.created(new URI("/medicos/" + result.getNColegiado())).body(result);
+      return ResponseEntity.created(new URI("/medicos/" + result.getNcolegiado())).body(result);
     }
 
     //LEER

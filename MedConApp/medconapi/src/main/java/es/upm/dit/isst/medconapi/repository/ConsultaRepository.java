@@ -8,7 +8,7 @@ import es.upm.dit.isst.medconapi.model.Consulta;
 import java.util.*;
 
 public interface ConsultaRepository extends CrudRepository<Consulta, Long> {
-    @Query("SELECT c FROM Consulta c WHERE c.medico.nColegiado = :idMedico")
+    @Query("SELECT c FROM Consulta c WHERE c.medico.ncolegiado = :idMedico")
     List<Consulta> findAllByMedico(@Param("idMedico") String idMedico);
     List<Consulta> findByStatus(Integer status);
     // este no se usa de momento 

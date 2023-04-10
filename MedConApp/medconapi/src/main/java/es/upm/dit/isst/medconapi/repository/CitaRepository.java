@@ -7,7 +7,7 @@ import es.upm.dit.isst.medconapi.model.Cita;
 import java.util.*;
 
 public interface CitaRepository extends CrudRepository<Cita, Long> {
-    @Query("SELECT c FROM Cita c WHERE c.medico.nColegiado = :idMedico")
+    @Query("SELECT c FROM Cita c WHERE c.medico.ncolegiado = :idMedico")
     List<Cita> findAllByMedico(@Param("idMedico") String idMedico);
     @Query("SELECT c FROM Cita c WHERE c.paciente.cipa = :idPaciente")
     Cita findByPaciente(@Param("idPaciente") String idPaciente);
