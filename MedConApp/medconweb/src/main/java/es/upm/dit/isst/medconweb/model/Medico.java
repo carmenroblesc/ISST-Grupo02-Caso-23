@@ -1,7 +1,7 @@
 package es.upm.dit.isst.medconweb.model;
 
 public class Medico {
-    private String nColegiado;
+    private String ncolegiado;
     private String nombre;
     private String apellidos;
     private String especialidad;
@@ -9,20 +9,13 @@ public class Medico {
     //Constructores
     public Medico() {}
 
-    public Medico(String nColegiado, String nombre, String apellidos, String especialidad) {
-        this.nColegiado = nColegiado;
-        this.nombre = nombre;
-        this.apellidos = apellidos;
-        this.especialidad = especialidad;
-    }
-
     //Getters & Setters
-    public String getNColegiado() {
-        return nColegiado;
+    public String getNcolegiado() {
+        return ncolegiado;
     }
 
-    public void setNColegiado(String nColegiado) {
-        this.nColegiado = nColegiado;
+    public void setNcolegiado(String nColegiado) {
+        this.ncolegiado = nColegiado;
     }
 
     public String getNombre() {
@@ -55,7 +48,7 @@ public class Medico {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((nColegiado == null) ? 0 : nColegiado.hashCode());
+        result = prime * result + ((ncolegiado == null) ? 0 : ncolegiado.hashCode());
         result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
         result = prime * result + ((apellidos == null) ? 0 : apellidos.hashCode());
         result = prime * result + ((especialidad == null) ? 0 : especialidad.hashCode());
@@ -71,10 +64,10 @@ public class Medico {
         if (getClass() != obj.getClass())
             return false;
         Medico other = (Medico) obj;
-        if (nColegiado == null) {
-            if (other.nColegiado != null)
+        if (ncolegiado == null) {
+            if (other.ncolegiado != null)
                 return false;
-        } else if (!nColegiado.equals(other.nColegiado))
+        } else if (!ncolegiado.equals(other.ncolegiado))
             return false;
         if (nombre == null) {
             if (other.nombre != null)
@@ -98,7 +91,7 @@ public class Medico {
     //toString
     @Override
     public String toString() {
-        return "Medico [nColegiado=" + nColegiado + ", nombre=" + nombre + ", apellidos=" + apellidos
+        return "Medico [ncolegiado=" + ncolegiado + ", nombre=" + nombre + ", apellidos=" + apellidos
                 + ", especialidad=" + especialidad + "]";
     }  
     

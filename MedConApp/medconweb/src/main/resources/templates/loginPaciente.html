@@ -14,16 +14,10 @@
         <div>Med<span>Con</span></div>
     </div>
     <br>
-    <div th:if="${param.error}">
-        Invalid username.
-    </div>
-    <div th:if="${param.logout}">
-        You have been logged out.
-    </div>
     <div class="login">
-        <form th:action="@{/pacientes/registrar}" method="post">
-            <label> CIPA : <input type="text" placeholder="CIPA"/></label><br>
-            <input type="submit" value="Registrar"/></div>
+        <form th:action="@{/pacientes/registrar}" th:object="${paciente}" method="post">
+            <label> CIPA : <input type="text" placeholder="CIPA" th:field="*{cipa}" /></label><br>
+            <input type="submit" value="Registrar Presencia"/>
         </form>
     </div>
 </body>

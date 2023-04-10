@@ -20,29 +20,28 @@ import es.upm.dit.isst.medconweb.model.Medico;
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     public final String MEDCONMANAGER_STRING = "http://localhost:8083/";
-    private RestTemplate restTemplate = new RestTemplate();
     
     @Override
     public Authentication authenticate(Authentication authentication) 
       throws AuthenticationException {
-        String id = authentication.getPrincipal().toString(); 
-        Cita cita = restTemplate.getForObject(MEDCONMANAGER_STRING + "citas/pacientes/" + id, Cita.class);
-        Medico medico = restTemplate.getForObject(MEDCONMANAGER_STRING + "medicos/" + id, Medico.class);
-        if (cita != null) {
-            List<SimpleGrantedAuthority> ga = new ArrayList<SimpleGrantedAuthority>();
-            ga.add(new SimpleGrantedAuthority("ROLE_PACIENTE"));
-            return new UsernamePasswordAuthenticationToken(id, "", ga);
-        }
-        if (medico != null) {
+        String name = authentication.getPrincipal().toString(); 
+        if (name.length() == 4) {
             List<SimpleGrantedAuthority> ga = new ArrayList<SimpleGrantedAuthority>();
             ga.add(new SimpleGrantedAuthority("ROLE_MEDICO"));
-            return new UsernamePasswordAuthenticationToken(id, "", ga);
+            return new UsernamePasswordAuthenticationToken(name, "", ga);
         }
-        throw new UsernameNotFoundException ("could not login");
+        if (name.length() == 6) {
+            List<SimpleGrantedAuthority> ga = new ArrayList<SimpleGrantedAuthority>();
+            ga.add(new SimpleGrantedAuthority("ROLE_PACIENTE"));
+            return new UsernamePasswordAuthenticationToken(name, "", ga);
+        }
+        throw new UsernameNotFoundException ("could not login");   
     }
 
     @Override
     public boolean supports(Class<?> authentication) {
         return authentication.equals(UsernamePasswordAuthenticationToken.class);
     }
+
+    
 }

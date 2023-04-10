@@ -1,6 +1,5 @@
 package es.upm.dit.isst.medconweb.controller;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -8,7 +7,9 @@ import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -16,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 
 import es.upm.dit.isst.medconweb.model.Cita;
 import es.upm.dit.isst.medconweb.model.Consulta;
+import es.upm.dit.isst.medconweb.model.Medico;
 import es.upm.dit.isst.medconweb.model.Paciente;
 
 @Controller
@@ -38,28 +40,33 @@ public class GeneralController {
     // PACIENTES
 
     @GetMapping("/pacientes")
-    public String login_pad() {
-        return VISTA_LOGIN_PACIENTE;
+    public String login_pad(Map<String, Object> model) {
+       Paciente paciente= new Paciente();
+       model.put("paciente", paciente);
+       return VISTA_LOGIN_PACIENTE;
     }
 
-    @GetMapping("/pacientes/registrar")
-    public String registrar(Model model, Principal principal) {
+    @PostMapping("/pacientes/registrar")
+    public String registrar(Paciente paciente, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return VISTA_LOGIN_PACIENTE;
+        }
+        String cipa = paciente.getCipa();
         // Comprobar si el paciente tiene cita
-        String cipa = principal.getName();
         try {
             Cita cita = restTemplate.getForObject(MEDCONMANAGER_STRING + "citas/pacientes/" + cipa, Cita.class);
             if (cita == null) {
                 return VISTA_LOGIN_PACIENTE;
             } else {
-                Paciente paciente = cita.getPaciente();
+                Paciente p = cita.getPaciente();
                 // Asignar un IdEspera al paciente
-                restTemplate.postForObject(MEDCONMANAGER_STRING + "/pacientes/" + cipa + "/asignarIdEspera", paciente,
-                        Paciente.class);
+                restTemplate.postForObject(MEDCONMANAGER_STRING + "/pacientes/" + cipa + "/asignarIdEspera", p, Paciente.class);
                 // Actualizar estado del paciente
-                restTemplate.postForObject(MEDCONMANAGER_STRING + "/pacientes/" + cipa + "/registrar", paciente,
-                        Paciente.class);
+                restTemplate.postForObject(MEDCONMANAGER_STRING + "/pacientes/" + cipa + "/registrar", p, Paciente.class);
+                Cita citaActualizada = restTemplate.getForObject(MEDCONMANAGER_STRING + "citas/pacientes/" + cipa, Cita.class);
+                Paciente pacienteActualizado = citaActualizada.getPaciente();
                 // Pasar paciente a la vista
-                model.addAttribute("paciente", paciente);
+                model.addAttribute("paciente", pacienteActualizado);
             }
         } catch (Exception e) {
         }
@@ -87,51 +94,51 @@ public class GeneralController {
     // MÉDICOS
 
     @GetMapping("/medicos")
-    public String login_med() {
-        return VISTA_LOGIN_MEDICO;
+    public String login_med(Map<String, Object> model) {
+       Medico medico = new Medico();
+       model.put("medico", medico);
+       return VISTA_LOGIN_MEDICO;
     }
 
-    @GetMapping("/medicos/entrar")
-    public String entrar() {
-        return "redirect:" + "/medicos/" + VISTA_LISTA;
-    }
-
-    @GetMapping("/medicos/lista")
-    public String lista(Model model, Principal principal) {
-        String idMedico = principal.getName();
+    @PostMapping("/medicos/lista")
+    public String lista(Medico medico, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return VISTA_LOGIN_MEDICO;
+        }
+        String idMedico = medico.getNcolegiado();
         List<Consulta> consultas = Arrays.asList(restTemplate
-                .getForEntity(MEDCONMANAGER_STRING + "/consultas/medicos" + idMedico, Consulta[].class).getBody());
+                .getForEntity(MEDCONMANAGER_STRING + "/consultas/medicos/" + idMedico, Consulta[].class).getBody());
         // le pasamos a la vista todas las consultas del médico para que tenga la agenda completa
         // debe ser la vista la que se encargue de marcar (por ejemplo con distintos colores) el estado de cada una
         model.addAttribute("consultas", consultas);
         return VISTA_LISTA;
     }
 
-    @GetMapping("/medicos/llamar/{id}")
-    public String llamar(@PathVariable(value = "id") Long idConsulta, Map<String, Object> model) {
+    @GetMapping("/llamar/{id}")
+    public String llamar(@PathVariable(value = "id") Long idConsulta, Model model) {
         try {
             Consulta consulta = restTemplate.getForObject(MEDCONMANAGER_STRING + "/consultas/" + idConsulta, Consulta.class);
             if (consulta != null) {
-                restTemplate.postForObject(MEDCONMANAGER_STRING + "/consultas" + consulta.getId() + "/incrementa",
-                        consulta, Consulta.class);
-                model.put("Consulta", consulta);
+                restTemplate.postForObject(MEDCONMANAGER_STRING + "/consultas/" + consulta.getId() + "/incrementa", consulta, Consulta.class);
+                String idMedico = consulta.getMedico().getNcolegiado();
+                List<Consulta> consultas = Arrays.asList(restTemplate.getForEntity(MEDCONMANAGER_STRING + "/consultas/medicos/" + idMedico, Consulta[].class).getBody());
+                model.addAttribute("consultas", consultas); 
             }
-        } catch (HttpClientErrorException.NotFound ex) {
-        }
-        return "redirect:/medicos" + VISTA_LISTA;
+        } catch (HttpClientErrorException.NotFound ex) {}
+        return VISTA_LISTA;
     }
 
-    @GetMapping("/medicos/finalizar/{id}") 
-    public String finalizar(@PathVariable(value = "id") Long idConsulta, Map<String, Object> model) {
+    @GetMapping("/finalizar/{id}") 
+    public String finalizar(@PathVariable(value = "id") Long idConsulta, Model model) {
         try {
             Consulta consulta = restTemplate.getForObject(MEDCONMANAGER_STRING + "/consultas/" + idConsulta, Consulta.class);
             if (consulta != null) {
-                restTemplate.postForObject(MEDCONMANAGER_STRING + "/consultas" + consulta.getId() + "/finaliza",
-                        consulta, Consulta.class);
-                 model.put("Consulta", consulta);
+                restTemplate.postForObject(MEDCONMANAGER_STRING + "/consultas/" + consulta.getId() + "/finaliza", consulta, Consulta.class);
+                String idMedico = consulta.getMedico().getNcolegiado();
+                List<Consulta> consultas = Arrays.asList(restTemplate.getForEntity(MEDCONMANAGER_STRING + "/consultas/medicos/" + idMedico, Consulta[].class).getBody());
+                model.addAttribute("consultas", consultas); 
             }
-        } catch (HttpClientErrorException.NotFound ex) {
-        }
-        return "redirect:/medicos" + VISTA_LISTA; 
+        } catch (HttpClientErrorException.NotFound ex) {}
+        return VISTA_LISTA;
     }  
 }
