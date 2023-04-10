@@ -2,6 +2,8 @@ package es.upm.dit.isst.medconapi.controller;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalTime;
+import java.util.Comparator;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -52,16 +54,31 @@ public class ConsultaController {
         return (List<Consulta>) consultaRepository.findAll();  
     }
 
-    // devuelve lista con todas las consultas de un médico 
+    // devuelve lista con todas las consultas de un médico ordenadas por hora
     @GetMapping("/consultas/medicos/{id}")
     List<Consulta> readMedico(@PathVariable String id) {
-        return (List<Consulta>) consultaRepository.findAllByMedico(id);  
+        List<Consulta> consultas = (List<Consulta>) consultaRepository.findAllByMedico(id);
+        return ordenarConsultasPorHora(consultas);
     }
-    
+
     // devuelve lista con todas las consultas en un determinado estado 
     @GetMapping("/consultas/status/{id}")
     List<Consulta> readStatus(@PathVariable Integer id) {
         return (List<Consulta>) consultaRepository.findByStatus(id);  
+    }
+
+    //método auxliar para ordenar las consultas por hora
+    private List<Consulta> ordenarConsultasPorHora(List<Consulta> consultas) {
+        Comparator<Consulta> comparador = new Comparator<Consulta>() {
+            @Override
+            public int compare(Consulta consulta1, Consulta consulta2) {
+                LocalTime hora1 = consulta1.getCita().getHora();
+                LocalTime hora2 = consulta2.getCita().getHora();
+                return hora1.compareTo(hora2);
+            }
+        };
+        consultas.sort(comparador);
+        return consultas;
     }
 
 
@@ -92,6 +109,16 @@ public class ConsultaController {
         return ResponseEntity.ok().body(consulta);
       }).orElse(new ResponseEntity<Consulta>(HttpStatus.NOT_FOUND));  
     }
+    
+    // pone el status a 2 y finaliza la consulta
+    @PostMapping("/consultas/{id}/finaliza")
+    ResponseEntity<Consulta> finaliza(@PathVariable Long id) {
+      return consultaRepository.findById(id).map(consulta -> {
+        consulta.setStatus(2);
+        consultaRepository.save(consulta);
+        return ResponseEntity.ok().body(consulta);
+      }).orElse(new ResponseEntity<Consulta>(HttpStatus.NOT_FOUND));  
+    }
 
     // BORRAR
 
@@ -101,13 +128,5 @@ public class ConsultaController {
         consultaRepository.deleteById(id);
         return ResponseEntity.ok().body(null);
     }
-     // pone el status a 3 y finaliza la consulta
-    @PostMapping("/consultas/{id}/finaliza")
-    ResponseEntity<Consulta> finaliza(@PathVariable Long id) {
-      return consultaRepository.findById(id).map(consulta -> {
-        consulta.setStatus(3);
-        consultaRepository.save(consulta);
-        return ResponseEntity.ok().body(consulta);
-      }).orElse(new ResponseEntity<Consulta>(HttpStatus.NOT_FOUND));  
-    }
+    
 }

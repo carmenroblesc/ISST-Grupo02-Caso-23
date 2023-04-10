@@ -6,29 +6,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.multipart.MultipartFile;
+
 
 import es.upm.dit.isst.medconweb.model.Cita;
 import es.upm.dit.isst.medconweb.model.Consulta;
-import es.upm.dit.isst.medconweb.model.Medico;
 import es.upm.dit.isst.medconweb.model.Paciente;
-
 
 @Controller
 public class GeneralController {
@@ -46,12 +34,12 @@ public class GeneralController {
     public String inicio() {
         return VISTA_INICIAL;
     }
-    
-    //PACIENTES
+
+    // PACIENTES
 
     @GetMapping("/pacientes")
     public String login_pacientes() {
-            return VISTA_LOGIN_PACIENTE;
+        return VISTA_LOGIN_PACIENTE;
     }
 
     @GetMapping("/pacientes/registrar")
@@ -61,18 +49,20 @@ public class GeneralController {
         try {
             Cita cita = restTemplate.getForObject(MEDCONMANAGER_STRING + "citas/pacientes/" + cipa, Cita.class);
             if (cita == null) {
-               return VISTA_LOGIN_PACIENTE;
-            }
-            else {
+                return VISTA_LOGIN_PACIENTE;
+            } else {
                 Paciente paciente = cita.getPaciente();
                 // Asignar un IdEspera al paciente
-                restTemplate.postForObject(MEDCONMANAGER_STRING + "/pacientes/" + cipa + "/asignarIdEspera", paciente, Paciente.class);
+                restTemplate.postForObject(MEDCONMANAGER_STRING + "/pacientes/" + cipa + "/asignarIdEspera", paciente,
+                        Paciente.class);
                 // Actualizar estado del paciente
-                restTemplate.postForObject(MEDCONMANAGER_STRING + "/pacientes/" + cipa + "/registrar", paciente, Paciente.class);
+                restTemplate.postForObject(MEDCONMANAGER_STRING + "/pacientes/" + cipa + "/registrar", paciente,
+                        Paciente.class);
                 // Pasar paciente a la vista
                 model.addAttribute("paciente", paciente);
             }
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
         return VISTA_TICKET;
     }
 
@@ -80,14 +70,13 @@ public class GeneralController {
 
     @GetMapping("/sala")
     public String sala(Model model) {
-        List<Consulta> consultasEnTurno = new ArrayList<Consulta>();
         List<Consulta> consultasEnEspera = new ArrayList<Consulta>();
-        List<Consulta> consultas = Arrays.asList(restTemplate.getForEntity(MEDCONMANAGER_STRING + "/consultas", Consulta[].class).getBody());
-        for (Consulta consulta : consultas) {
-            if (consulta.getStatus() == 1) {
-                consultasEnTurno.add(consulta);
-            }
-            else if (consulta.getStatus() == 0 && consulta.getPaciente().getPresente())
+        List<Consulta> consultasEnTurno = Arrays
+                .asList(restTemplate.getForEntity(MEDCONMANAGER_STRING + "/consultas/status" + 1, Consulta[].class).getBody());
+        List<Consulta> consultasEnEsperaAux = Arrays
+                .asList(restTemplate.getForEntity(MEDCONMANAGER_STRING + "/consultas/status" + 0, Consulta[].class).getBody());
+        for (Consulta consulta : consultasEnEsperaAux) {
+            if (consulta.getPaciente().getPresente())
                 consultasEnEspera.add(consulta);
         }
         model.addAttribute("consultasEnTurno", consultasEnTurno);
@@ -108,146 +97,41 @@ public class GeneralController {
     }
 
     @GetMapping("/medicos/lista")
-    public String lista (Model model, Principal principal) {
-        String idMedico = principal.getName(); 
-        List<Consulta> consultas = Arrays.asList(restTemplate.getForEntity(MEDCONMANAGER_STRING + "/consultas/medicos" + idMedico, Consulta[].class).getBody());
-        // le pasamos a la vista todas las consultas del médico para que tenga la agenda completa...
-        // ...debe ser la vista la que se encargue de marcar (por ejemplo con distintos colores) el estado de cada una
+    public String lista(Model model, Principal principal) {
+        String idMedico = principal.getName();
+        List<Consulta> consultas = Arrays.asList(restTemplate
+                .getForEntity(MEDCONMANAGER_STRING + "/consultas/medicos" + idMedico, Consulta[].class).getBody());
+        // le pasamos a la vista todas las consultas del médico para que tenga la agenda completa
+        // debe ser la vista la que se encargue de marcar (por ejemplo con distintos colores) el estado de cada una
         model.addAttribute("consultas", consultas);
-        return VISTA_LISTA; 
-    }
-
-
-
-
-
-
-                
-
-
-    // TFG
-
-
-    @GetMapping("/lista")
-    public String lista2(Model model, Principal principal) {
-        List<TFG> lista = new ArrayList<TFG>();
-        if (principal == null || principal.getName().equals(""))
-            lista = Arrays.asList(restTemplate.getForEntity(TFGMANAGER_STRING, TFG[].class).getBody());
-        else if (principal.getName().contains("@upm.es"))
-            lista = Arrays.asList(restTemplate
-                    .getForEntity(TFGMANAGER_STRING + "profesor/" + principal.getName(), TFG[].class).getBody());
-        else if (principal.getName().contains("@alumnos.upm.es")) {
-            try {
-                TFG tfg = restTemplate.getForObject(TFGMANAGER_STRING + principal.getName(), TFG.class);
-                if (tfg != null)
-                    lista.add(tfg);
-            } catch (Exception e) {
-            }
-        }
-        model.addAttribute("tfgs", lista);
         return VISTA_LISTA;
     }
 
-    @GetMapping("/crear")
-    public String crear(Map<String, Object> model) {
-        TFG TFG = new TFG();
-        model.put("TFG", TFG);
-        model.put("accion", "guardar");
-        return VISTA_FORMULARIO;
-    }
-
-    @PostMapping("/guardar")
-    public String guardar(@Validated TFG TFG, BindingResult result) {
-        if (result.hasErrors()) {
-            return VISTA_FORMULARIO;
-        }
+    @GetMapping("/medicos/llamar/{id}")
+    public String llamar(@PathVariable(value = "id") Long idConsulta, Map<String, Object> model) {
         try {
-            restTemplate.postForObject(TFGMANAGER_STRING, TFG, TFG.class);
-        } catch (Exception e) {
-        }
-        return "redirect:" + VISTA_LISTA;
-    }
-
-    @GetMapping("/editar/{id}")
-    public String editar(@PathVariable(value = "id") String id,
-            Map<String, Object> model, Principal principal) {
-        if (principal == null || !principal.getName().equals(id))
-            return "redirect:/" + VISTA_LISTA;
-        TFG tfg = null;
-        try {
-            tfg = restTemplate.getForObject(TFGMANAGER_STRING + id, TFG.class);
+            Consulta consulta = restTemplate.getForObject(MEDCONMANAGER_STRING + "/consultas/" + idConsulta, Consulta.class);
+            if (consulta != null) {
+                restTemplate.postForObject(MEDCONMANAGER_STRING + "/consultas" + consulta.getId() + "/incrementa",
+                        consulta, Consulta.class);
+                model.put("Consulta", consulta);
+            }
         } catch (HttpClientErrorException.NotFound ex) {
         }
-        model.put("TFG", tfg);
-        model.put("accion", "../actualizar");
-        return tfg != null ? VISTA_FORMULARIO : "redirect:/" + VISTA_LISTA;
+        return "redirect:/medicos" + VISTA_LISTA;
     }
 
-    @PostMapping("/actualizar")
-    public String actualizar(@Validated TFG tfg, BindingResult result) {
-        if (result.hasErrors()) {
-            return VISTA_FORMULARIO;
-        }
+    @GetMapping("/medicos/finalizar/{id}") 
+    public String finalizar(@PathVariable(value = "id") Long idConsulta, Map<String, Object> model) {
         try {
-            restTemplate.put(TFGMANAGER_STRING + tfg.getEmail(),
-                    tfg, TFG.class);
-        } catch (Exception e) {
-        }
-        return "redirect:" + VISTA_LISTA;
-    }
-
-    @GetMapping("/eliminar/{id}")
-    public String eliminar(@PathVariable(value = "id") String id) {
-        restTemplate.delete(TFGMANAGER_STRING + id);
-        return "redirect:/" + VISTA_LISTA;
-    }
-
-    @GetMapping("/aceptar/{id}")
-    public String aceptar(@PathVariable(value = "id") String id, Map<String, Object> model, Principal principal) {
-        if (principal != null) {
-            try {
-                TFG tfg = restTemplate.getForObject(TFGMANAGER_STRING + id, TFG.class);
-                if (tfg != null && principal.getName().equals(tfg.getTutor())) {
-                    restTemplate.postForObject(TFGMANAGER_STRING + tfg.getEmail() + "/incrementa", tfg, TFG.class);
-                    model.put("TFG", tfg);
-                }
-            } catch (HttpClientErrorException.NotFound ex) {
+            Consulta consulta = restTemplate.getForObject(MEDCONMANAGER_STRING + "/consultas/" + idConsulta, Consulta.class);
+            if (consulta != null) {
+                restTemplate.postForObject(MEDCONMANAGER_STRING + "/consultas" + consulta.getId() + "/finaliza",
+                        consulta, Consulta.class);
+                 model.put("Consulta", consulta);
             }
+        } catch (HttpClientErrorException.NotFound ex) {
         }
-        return "redirect:/" + VISTA_LISTA;
-    }
-
-    @PostMapping("/upload")
-    public String uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("email") String email,
-            Principal principal) {
-        if (principal == null || principal.getName() == null || !principal.getName().equals(email) || file.isEmpty())
-            return "redirect:/" + VISTA_LISTA;
-        try {
-            TFG tfg = restTemplate.getForObject(TFGMANAGER_STRING + email, TFG.class);
-            if (tfg != null && tfg.getStatus() == 3) {
-                tfg.setStatus(tfg.getStatus() + 1);
-                tfg.setMemoria(file.getBytes());
-                restTemplate.put(TFGMANAGER_STRING + tfg.getEmail(), tfg, TFG.class);
-            }
-        } catch (Exception e) {
-        }
-        return "redirect:/" + VISTA_LISTA;
-    }
-
-    @GetMapping("/download/{email}")
-    @ResponseBody
-    public ResponseEntity<ByteArrayResource> getFile(@PathVariable String email) {
-        try {
-            TFG tfg = restTemplate.getForObject(TFGMANAGER_STRING + email, TFG.class);
-            if (tfg != null && tfg.getMemoria() != null) {
-                HttpHeaders header = new HttpHeaders();
-                header.setContentType(new MediaType("application", "force-download"));
-                header.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"TFG.pdf\"");
-                ByteArrayResource resource = new ByteArrayResource(tfg.getMemoria());
-                return new ResponseEntity<ByteArrayResource>(resource, header, HttpStatus.CREATED);
-            }
-        } catch (Exception e) {
-        }
-        return new ResponseEntity<ByteArrayResource>(HttpStatus.NOT_FOUND);
-    }
+        return "redirect:/medicos" + VISTA_LISTA; 
+    }  
 }
