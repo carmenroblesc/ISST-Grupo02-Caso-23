@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8"/>
+</head>
+<body>
+	<header></header>
+
+	<div class="container">
+		<div class="card bg-dark">
+			<div class="card-body">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th th:text="Cipa"></th>
+							<th th:text="Estado"></th>
+							<th th:text="Consulta"></th>		
+						</tr>
+					</thead>
+					<tbody>
+                        <tr th:each="Consulta: ${consultasEnTurno}">
+							<td th:text="${Consulta.paciente.cipa}"></td>
+							<td th:text="Entre"></td>
+							<td th:text="${Consulta.salaConsulta}"></td>
+						</tr>
+						<tr th:each="Consulta: ${consultasEnEspera}">
+							<td th:text="${Consulta.paciente.cipa}"></td>
+							<td th:text="Espere"></td>
+							<td th:text="NA"></td>
+						</tr>
+					</tbody>
+					<tfoot>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+	</div>
+	
+	<footer></footer>
+</body>
+</html>

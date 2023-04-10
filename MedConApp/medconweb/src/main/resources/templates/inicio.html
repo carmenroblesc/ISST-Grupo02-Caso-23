@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-
+<html xmlns:th="http://www.thymeleaf.org">
+  
 <head>
   <meta charset="UTF-8"/>
 	<title th:text="MEDCON-web"></title>
@@ -15,13 +14,13 @@
   </div>
   <br>
   <div class="login1">
-    <a th:href="@{medicos/}" th:text="Médico" class="btn btn-outline-primary"></a>
-  </div>
-  <div class="login2">
-    <a th:href="@{pacientes/}" th:text="Paciente" class="btn btn-outline-primary"></a>
+    <a th:href="@{medicos}" th:text="Medico" class="btn btn-outline-primary"></a>
   </div>
   <div class="login3">
-    <a th:href="@{sala/}" th:text="Sala" class="btn btn-outline-primary"></a>
+    <a th:href="@{sala}" th:text="Sala" class="btn btn-outline-primary"></a>
+  </div>
+  <div class="login2">
+    <a th:href="@{pacientes}" th:text="Paciente" class="btn btn-outline-primary"></a>
   </div>
 </body>
 </html>

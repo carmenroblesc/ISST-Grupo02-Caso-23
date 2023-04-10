@@ -38,7 +38,7 @@ public class GeneralController {
     // PACIENTES
 
     @GetMapping("/pacientes")
-    public String login_pacientes() {
+    public String login_pad() {
         return VISTA_LOGIN_PACIENTE;
     }
 
@@ -72,9 +72,9 @@ public class GeneralController {
     public String sala(Model model) {
         List<Consulta> consultasEnEspera = new ArrayList<Consulta>();
         List<Consulta> consultasEnTurno = Arrays
-                .asList(restTemplate.getForEntity(MEDCONMANAGER_STRING + "/consultas/status" + 1, Consulta[].class).getBody());
+                .asList(restTemplate.getForEntity(MEDCONMANAGER_STRING + "/consultas/status/" + 1, Consulta[].class).getBody());
         List<Consulta> consultasEnEsperaAux = Arrays
-                .asList(restTemplate.getForEntity(MEDCONMANAGER_STRING + "/consultas/status" + 0, Consulta[].class).getBody());
+                .asList(restTemplate.getForEntity(MEDCONMANAGER_STRING + "/consultas/status/" + 0, Consulta[].class).getBody());
         for (Consulta consulta : consultasEnEsperaAux) {
             if (consulta.getPaciente().getPresente())
                 consultasEnEspera.add(consulta);
@@ -93,7 +93,7 @@ public class GeneralController {
 
     @GetMapping("/medicos/entrar")
     public String entrar() {
-        return "redirect:/medicos" + VISTA_LISTA;
+        return "redirect:" + "/medicos/" + VISTA_LISTA;
     }
 
     @GetMapping("/medicos/lista")
