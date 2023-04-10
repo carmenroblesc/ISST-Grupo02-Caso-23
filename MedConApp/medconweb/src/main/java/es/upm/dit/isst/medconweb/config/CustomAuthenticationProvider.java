@@ -10,10 +10,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
-
-import es.upm.dit.isst.medconweb.model.Cita;
-import es.upm.dit.isst.medconweb.model.Medico;
 
 
 @Component
