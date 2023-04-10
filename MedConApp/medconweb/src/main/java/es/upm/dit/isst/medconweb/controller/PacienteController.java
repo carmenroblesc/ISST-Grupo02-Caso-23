@@ -25,14 +25,14 @@ public class PacienteController {
         private RestTemplate restTemplate = new RestTemplate();
         
 
-    @GetMapping("/pacientes")
+    @GetMapping("/pacientes2")
     public String login() {
 
             return "redirect:/" + VISTA_LOGIN;
 
     }
    
-    @GetMapping("/pacientes/registrar")
+    @GetMapping("/pacientes2/registrar")
     public String registrar(Paciente paciente) {
         // Comprobar si el paciente tiene cita
         ResponseEntity<Cita[]> response = restTemplate.getForEntity(

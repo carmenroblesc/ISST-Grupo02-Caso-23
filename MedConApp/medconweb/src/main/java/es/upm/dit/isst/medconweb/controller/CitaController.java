@@ -40,5 +40,4 @@ public class CitaController {
         }
         return "redirect:" + VISTA_LISTA;
     }
-
 }

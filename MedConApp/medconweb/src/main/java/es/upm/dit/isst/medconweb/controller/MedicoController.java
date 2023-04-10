@@ -18,27 +18,27 @@ public class MedicoController {
     private RestTemplate restTemplate = new RestTemplate();
 
 
-    @GetMapping("/medicos")
+    @GetMapping("/medicos2")
     public String login_med() {
 
             return "redirect:/" + VISTA_LOGIN_MEDICOS;
 
     }
 
-    @GetMapping("/medicos/entrar")
+    @GetMapping("/medicos2/entrar")
     public String entrar_med() {
 
             return "redirect:/" + VISTA_LISTA;
 
     }
 
-    @GetMapping("/medicos/lista")//SIN HACER,no entiendo lo del papel de Cova
+    @GetMapping("/medicos2/lista")//SIN HACER,no entiendo lo del papel de Cova
     public String lista_med() {
 
             return "redirect:/" + VISTA_LISTA_MEDICOS;
 
     }
-    @GetMapping("/medicos/llamar/{id}")//Teóricamente bien
+    @GetMapping("/medicos2/llamar/{id}")//Teóricamente bien
     public String  llamar(@PathVariable(value = "id") Long id) {
     String consultaEndpoint = MEDCON_MANAGER_STRING + "/consultas/" + id + "/incrementa";
     restTemplate.postForLocation(consultaEndpoint, null);
@@ -46,7 +46,7 @@ public class MedicoController {
 }
 
 
-@GetMapping("/medicos/finalizar/{id}")//Teóricamente bien
+@GetMapping("/medicos2/finalizar/{id}")//Teóricamente bien
 public String finalizar(@PathVariable(value = "id") Long idConsulta) {
     String url = MEDCON_MANAGER_STRING + "/consultas/" + idConsulta + "/finaliza";
     restTemplate.postForObject(url, null, ResponseEntity.class);
