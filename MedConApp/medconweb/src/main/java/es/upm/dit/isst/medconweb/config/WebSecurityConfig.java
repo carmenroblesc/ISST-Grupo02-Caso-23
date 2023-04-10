@@ -25,25 +25,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.csrf().disable()
         .authorizeRequests()
 			.antMatchers("/css/**", "/img/**", "/layouts/**").permitAll()
-			.antMatchers("/", "/lista").permitAll()
-			.antMatchers("/crear", "/guardar").permitAll()
+			.antMatchers("/", "/pacientes/**, /sala/**, /medicos/**").permitAll()
 			.anyRequest().authenticated()
         .and()
             .formLogin()
-				.loginPage("/login")
+				.loginPage("/pacientes")
+				.loginPage("/medicos")
 				.permitAll()
 		.and()
             .logout()
 			.permitAll();
-/*
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) //NEW
-        .and()
-        .authorizeRequests()
-			.antMatchers("/login").permitAll() // sustituye por formLogin y logout
-			.antMatchers("/lista").permitAll()
-            .anyRequest().authenticated()
-        .and()
-			.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
-*/
 	}
 }
