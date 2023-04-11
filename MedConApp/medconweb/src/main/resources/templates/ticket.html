@@ -2,11 +2,51 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8"/>
+    <link href="../static/css/ticket.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-    <h3>Bienvenido</h3>
-    <h3 th:text="${paciente.nombre}+${paciente.apellidos}"> Juan Perez</h3>
-    <h2>Aquí tiene su identificador de espera:</h2>
-    <h3 th:text="${paciente.idEspera}">JP-1234</h3>
+   <div class="contenido">
+  <div class="ticket">
+    </div>
+    <div class="details">
+      <div class="tinfo">
+        Paciente
+      </div>
+      <div class="tdata name">
+        <h3 th:text="${paciente.nombre}+${paciente.apellidos}"> Juan Perez</h3>
+      </div>
+      <div class="tinfo">
+        Ticket
+      </div>     
+      <div class="tinfo">
+        Aquí tiene su identificador de espera
+      </div>
+      <div class="tdata">
+        <h3 th:text="${paciente.idEspera}">JP-1234</h3>
+      </div>  
+      <div class="masinfo">
+        <div class="left">
+         <div class="tinfo">
+        Hora
+      </div>
+      <div class="tdata nesp">
+        <script src="../static/js/myscript.js"></script>
+      </div>  
+        </div>
+        <div class="right">
+        <div class="tinfo">
+        Dirección
+      </div>
+      <div class="tdata nesp">
+        Planta 1
+      </div> 
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div> 
 </body>
 </html>
+
+
