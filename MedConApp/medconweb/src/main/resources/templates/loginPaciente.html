@@ -16,8 +16,8 @@
     <br>
     <div class="login">
         <form th:action="@{/pacientes/registrar}" th:object="${paciente}" method="post">
-            <label> CIPA : <input type="text" placeholder="CIPA" th:field="*{cipa}" /></label><br>
-            <input type="submit" value="Registrar Presencia"/>
+            <input type="text" placeholder="CIPA" th:field="*{cipa}" /><br>
+            <input type="submit"  class='button' value="Registrar Presencia"/>
         </form>
     </div>
 </body>
