@@ -17,7 +17,7 @@
     <div class="login">
         <form th:action="@{/medicos/lista}" th:object="${medico}" method="post">
             <label> Nº de Colegiado : <input type="text" placeholder="Nº de Colegiado" th:field="*{ncolegiado}" /></label><br>
-            <input type="submit" value="Entrar"/>
+            <input type="submit" class="button" value="Entrar"/>
         </form>
     </div>
 </body>
