@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8"/>
-    <link href="../static/css/ticket.css" rel="stylesheet" type="text/css" />
+    <link th:href="@{/css/ticket.css}" href="../static/css/ticket.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
    <div class="contenido">
@@ -13,7 +13,7 @@
         Paciente
       </div>
       <div class="tdata name">
-        <h3 th:text="${paciente.nombre}+${paciente.apellidos}"> Juan Perez</h3>
+        <span th:text="${paciente.nombre}"></span><span>&nbsp</span><span th:text="${paciente.apellidos}"></span>
       </div>
       <div class="tinfo">
         Ticket
@@ -30,19 +30,21 @@
         Hora
       </div>
       <div class="tdata nesp">
-        <script src="../static/js/myscript.js"></script>
+        <script src="../static/js/myscript.js" th:src="@{/js/myscript.js}"></script>
       </div>  
         </div>
         <div class="right">
         <div class="tinfo">
-        Dirección
+        Sala de espera
       </div>
       <div class="tdata nesp">
-        Planta 1
+        Diríjase a la sala de espera nº 1
       </div> 
         </div>
       </div>
-      
+      <div class="logout">
+        <a th:href="@{/pacientes}" style="color: #d83333;" class="btn btn-outline-danger">Salir</a>
+      </div>
     </div>
   </div>
 </div> 

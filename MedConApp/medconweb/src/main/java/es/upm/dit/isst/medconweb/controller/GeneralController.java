@@ -140,5 +140,26 @@ public class GeneralController {
             }
         } catch (HttpClientErrorException.NotFound ex) {}
         return VISTA_LISTA;
-    }  
+    } 
+    
+    @GetMapping("/historial")
+    public String historial() {
+        return "GestionarHistoriales";
+    }
+
+    @GetMapping("/recetas")
+    public String recetas() {
+        return "GestionarRecetas";
+    }
+
+    @GetMapping("/pruebas")
+    public String pruebas() {
+        return "GestionarPruebas";
+    }
+
+    @GetMapping("/citas")
+    public String citas() {
+        return "GestionCitas";
+    }
+    
 }
