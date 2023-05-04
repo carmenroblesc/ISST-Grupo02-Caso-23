@@ -1,13 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8"/>
-    <title th:text="TICKET"></title>
-    <link th:href="@{/css/ticket.css}" href="../static/css/ticket.css" rel="stylesheet" type="text/css" />
+  <meta charset="UTF-8"/>
+  <title th:text="TICKET"></title>
+  <link th:href="@{/css/ticket.css}" href="../static/css/ticket.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-   <div class="contenido">
-  <div class="ticket">
+  <div class="contenido">
+    <div class="ticket">
+      <div class="hqr">
+        <div class="column left-one"></div>
+        <div class="column center">
+          <div id="qr-container"></div>
+        </div>
+        <div class="column right-one"></div>
+      </div>
     </div>
     <div class="details">
       <div class="tinfo">
@@ -27,20 +34,20 @@
       </div>  
       <div class="masinfo">
         <div class="left">
-         <div class="tinfo">
-        Hora
-      </div>
-      <div class="tdata nesp">
-        <script src="../static/js/myscript.js" th:src="@{/js/myscript.js}"></script>
-      </div>  
+          <div class="tinfo">
+            Hora
+          </div>
+          <div class="tdata nesp">
+            <script src="../static/js/myscript.js" th:src="@{/js/myscript.js}"></script>
+          </div>  
         </div>
         <div class="right">
-        <div class="tinfo">
-        Sala de espera
-      </div>
-      <div class="tdata nesp">
-        Diríjase a la sala de espera nº 1
-      </div> 
+          <div class="tinfo">
+            Sala de espera
+          </div>
+          <div class="tdata nesp">
+            Diríjase a la sala de espera nº 1
+          </div> 
         </div>
       </div>
       <div class="logout">
@@ -48,8 +55,15 @@
       </div>
     </div>
   </div>
-</div> 
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator/qrcode.js"></script>
+  <script>
+    window.onload = function() {
+      var qr = qrcode(0, 'H');
+      qr.addData("${paciente.idEspera}");
+      qr.make();
+      var qrImage = qr.createImgTag(2);
+      document.getElementById("qr-container").innerHTML = qrImage;
+    };
+  </script>
 </body>
 </html>
-
-
