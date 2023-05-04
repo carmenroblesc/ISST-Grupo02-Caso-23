@@ -60,7 +60,23 @@
 							</td>
 							<td>
 								<a th:href="@{/finalizar/} + ${Consulta.id}" class="btn btn-primary" style="font-weight:bold; border: 1px solid black;">FINALIZAR</a> 
-							</td>	
+							</td>
+							<th:block th:if="${Consulta.status == 1}">
+							<td>
+								<p id="tiempo-transcurrido">Tiempo de consulta: 0 segundos</p>
+								<script th:inline="javascript">
+								/* Obtiene el tiempo inicial del servidor, usando Thymeleaf */
+								var tiempoInicial = /*[[${#dates.createNow()}]]*/ new Date().getTime();
+								var intervaloTiempo = 1;
+
+								setInterval(function() {
+									var tiempoActual = new Date().getTime();
+									var tiempoTranscurrido = Math.floor((tiempoActual - tiempoInicial) / 1000);
+									document.getElementById("tiempo-transcurrido").innerHTML = "Tiempo de consulta: " + tiempoTranscurrido + " segundos";
+								}, intervaloTiempo * 1000);
+								</script>
+							</td>
+							</th:block>
 						</tr>
 					</tbody>
 				</table>
