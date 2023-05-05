@@ -1,6 +1,5 @@
 package es.upm.dit.isst.medconapi;
 
-
 import static org.junit.jupiter.api.Assertions.*;
 
 import es.upm.dit.isst.medconapi.model.Cita;
@@ -14,8 +13,9 @@ import es.upm.dit.isst.medconapi.repository.PacienteRepository;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-
+import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 
 @SpringBootTest
 public class RepositoryTests {
@@ -23,19 +23,37 @@ public class RepositoryTests {
     @Autowired
     private CitaRepository citaRepository;
     @Autowired
-	private ConsultaRepository consultaRepository;
+    private ConsultaRepository consultaRepository;
     @Autowired
-	private MedicoRepository medicoRepository;
+    private MedicoRepository medicoRepository;
     @Autowired
-	private PacienteRepository pacienteRepository;
+    private PacienteRepository pacienteRepository;
 
+    /*
+     * @BeforeEach
+     * public void setUp() {
+     * // Limpia la base de datos antes de cada prueba, si es necesario
+     * citaRepository.deleteAll(); // Primero, eliminar todas las citas
+     * medicoRepository.deleteAll();
+     * pacienteRepository.deleteAll();
+     * consultaRepository.deleteAll();
+     * }
+     * 
+     * @AfterEach
+     * public void tearDown() {
+     * // Limpia la base de datos después de cada prueba, si es necesario
+     * citaRepository.deleteAll(); // Primero, eliminar todas las citas
+     * medicoRepository.deleteAll();
+     * pacienteRepository.deleteAll();
+     * consultaRepository.deleteAll();
+     * }
+     */
 
     @Test
     public void testCitaRepository() {
 
-		
         Medico medico = new Medico();
-        medico.setNcolegiado("12345");
+        medico.setNcolegiado("15234");
         medico.setEspecialidad("Cardiología");
         medicoRepository.save(medico);
 
@@ -44,14 +62,12 @@ public class RepositoryTests {
         paciente.setNombre("Paciente Test");
         pacienteRepository.save(paciente);
 
-        
         Cita cita = new Cita();
         cita.setMedico(medico);
         cita.setPaciente(paciente);
         citaRepository.save(cita);
 
-        
-        List<Cita> citasPorMedico = citaRepository.findAllByMedico("12345");
+        List<Cita> citasPorMedico = citaRepository.findAllByMedico("15234");
         assertEquals(1, citasPorMedico.size());
         assertEquals(cita.getId(), citasPorMedico.get(0).getId());
 
@@ -62,7 +78,7 @@ public class RepositoryTests {
     @Test
     public void testConsultaRepository() {
         Medico medico = new Medico();
-        medico.setNcolegiado("67890");
+        medico.setNcolegiado("67908");
         medico.setEspecialidad("Neurología");
         medicoRepository.save(medico);
 
@@ -71,7 +87,7 @@ public class RepositoryTests {
         consulta.setStatus(1);
         consultaRepository.save(consulta);
 
-        List<Consulta> consultasPorMedico = consultaRepository.findAllByMedico("67890");
+        List<Consulta> consultasPorMedico = consultaRepository.findAllByMedico("67908");
         assertEquals(1, consultasPorMedico.size());
         assertEquals(consulta.getId(), consultasPorMedico.get(0).getId());
 
@@ -104,9 +120,3 @@ public class RepositoryTests {
         assertEquals(paciente.getNombre(), pacienteEncontrado.getNombre());
     }
 }
-
-
-
-
-
-
