@@ -66,6 +66,7 @@ public class MedicoController {
     ResponseEntity<Medico> update(@PathVariable String id, @RequestBody Medico newMedico) {
         return medicoRepository.findById(id).map(medico -> {
             medico.setNombre(newMedico.getNombre());
+            medico.setPassword(newMedico.getPassword());
             medico.setApellidos(newMedico.getApellidos());
             medico.setEspecialidad(newMedico.getEspecialidad());
             medicoRepository.save(medico);

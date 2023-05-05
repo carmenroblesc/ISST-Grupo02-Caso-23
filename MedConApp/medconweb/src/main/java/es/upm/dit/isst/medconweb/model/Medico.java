@@ -2,6 +2,8 @@ package es.upm.dit.isst.medconweb.model;
 
 public class Medico {
     private String ncolegiado;
+    private String password;
+    private String role;
     private String nombre;
     private String apellidos;
     private String especialidad;
@@ -9,13 +11,28 @@ public class Medico {
     //Constructores
     public Medico() {}
 
-    //Getters & Setters
     public String getNcolegiado() {
         return ncolegiado;
     }
 
-    public void setNcolegiado(String nColegiado) {
-        this.ncolegiado = nColegiado;
+    public void setNcolegiado(String ncolegiado) {
+        this.ncolegiado = ncolegiado;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getNombre() {
@@ -42,13 +59,13 @@ public class Medico {
         this.especialidad = especialidad;
     }
 
-
-    //hashCode & equals
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((ncolegiado == null) ? 0 : ncolegiado.hashCode());
+        result = prime * result + ((password == null) ? 0 : password.hashCode());
+        result = prime * result + ((role == null) ? 0 : role.hashCode());
         result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
         result = prime * result + ((apellidos == null) ? 0 : apellidos.hashCode());
         result = prime * result + ((especialidad == null) ? 0 : especialidad.hashCode());
@@ -69,6 +86,16 @@ public class Medico {
                 return false;
         } else if (!ncolegiado.equals(other.ncolegiado))
             return false;
+        if (password == null) {
+            if (other.password != null)
+                return false;
+        } else if (!password.equals(other.password))
+            return false;
+        if (role == null) {
+            if (other.role != null)
+                return false;
+        } else if (!role.equals(other.role))
+            return false;
         if (nombre == null) {
             if (other.nombre != null)
                 return false;
@@ -86,14 +113,5 @@ public class Medico {
             return false;
         return true;
     }
-
-
-    //toString
-    @Override
-    public String toString() {
-        return "Medico [ncolegiado=" + ncolegiado + ", nombre=" + nombre + ", apellidos=" + apellidos
-                + ", especialidad=" + especialidad + "]";
-    }  
-    
     
 }
