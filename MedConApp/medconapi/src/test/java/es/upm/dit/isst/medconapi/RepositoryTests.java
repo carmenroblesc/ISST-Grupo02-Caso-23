@@ -29,25 +29,23 @@ public class RepositoryTests {
     @Autowired
     private PacienteRepository pacienteRepository;
 
-    /*
-     * @BeforeEach
-     * public void setUp() {
-     * // Limpia la base de datos antes de cada prueba, si es necesario
-     * citaRepository.deleteAll(); // Primero, eliminar todas las citas
-     * medicoRepository.deleteAll();
-     * pacienteRepository.deleteAll();
-     * consultaRepository.deleteAll();
-     * }
-     * 
-     * @AfterEach
-     * public void tearDown() {
-     * // Limpia la base de datos después de cada prueba, si es necesario
-     * citaRepository.deleteAll(); // Primero, eliminar todas las citas
-     * medicoRepository.deleteAll();
-     * pacienteRepository.deleteAll();
-     * consultaRepository.deleteAll();
-     * }
-     */
+    @BeforeEach
+    public void setUp() {
+        // Limpia la base de datos antes de cada prueba, si es necesario
+        consultaRepository.deleteAll();
+        citaRepository.deleteAll();
+        medicoRepository.deleteAll();
+        pacienteRepository.deleteAll();
+    }
+
+    @AfterEach
+    public void tearDown() {
+        // Limpia la base de datos después de cada prueba, si es necesario
+        consultaRepository.deleteAll();
+        citaRepository.deleteAll();
+        medicoRepository.deleteAll();
+        pacienteRepository.deleteAll();
+    }
 
     @Test
     public void testCitaRepository() {
