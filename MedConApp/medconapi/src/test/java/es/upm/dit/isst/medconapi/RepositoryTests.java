@@ -23,8 +23,11 @@ public class RepositoryTests {
 
     @Autowired
     private CitaRepository citaRepository;
+    @Autowired
 	private ConsultaRepository consultaRepository;
+    @Autowired
 	private MedicoRepository medicoRepository;
+    @Autowired
 	private PacienteRepository pacienteRepository;
 
 
