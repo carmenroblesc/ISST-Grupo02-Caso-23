@@ -96,7 +96,23 @@ public class GeneralController {
 
 
     // MÉDICOS
+    /** @GetMapping("/medicos")
+    public String login_med() {
+       return "login";
+    }
+  
+    @GetMapping("/medicos/lista")
+    public String lista(Model model, Principal principal) {
+        String idMedico = principal.getName();
+        List<Consulta> consultas = Arrays.asList(restTemplate
+                .getForEntity(MEDCONMANAGER_STRING + "/consultas/medicos/" + idMedico, Consulta[].class).getBody());
+        // le pasamos a la vista todas las consultas del médico para que tenga la agenda completa
+        // debe ser la vista la que se encargue de marcar el estado de cada una
+        model.addAttribute("consultas", consultas);
+        return VISTA_LISTA;
+    }
 
+    **/
     @GetMapping("/medicos")
     public String login_med(Map<String, Object> model) {
        Medico medico = new Medico();
