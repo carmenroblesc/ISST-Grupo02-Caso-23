@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import es.upm.dit.isst.medconapi.model.Cita;
@@ -24,7 +25,7 @@ public class MedconapiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(MedconapiApplication.class, args);
 	}
-
+	
 	@Component
 	class dataLoader implements CommandLineRunner {
 		@Autowired
@@ -38,13 +39,6 @@ public class MedconapiApplication {
 
 		@Override
 		public void run(String... args) throws Exception {
-
-			Paciente p1 = new Paciente();
-			p1.setCipa("8475291432");
-			p1.setNombre("Lucia");
-			p1.setApellidos("Gonzalez");
-			p1.setPresente(false);
-			pacienteRepository.save(p1);
 
 			Paciente p2 = new Paciente();
 			p2.setCipa("8475291432");
@@ -133,13 +127,6 @@ public class MedconapiApplication {
 			m3.setEspecialidad("Pediatria");
 			medicoRepository.save(m3);
 
-			Cita c1 = new Cita();
-			c1.setFecha(LocalDate.of(2023, 5, 10));
-			c1.setHora(LocalTime.of(10, 0));
-			c1.setPaciente(p1);
-			c1.setMedico(m1);
-			citaRepository.save(c1);
-
 			Cita c2 = new Cita();
 			c2.setFecha(LocalDate.of(2023, 5, 10));
 			c2.setHora(LocalTime.of(10, 15));
@@ -198,22 +185,13 @@ public class MedconapiApplication {
 
 			Cita c10 = new Cita();
 			c10.setFecha(LocalDate.of(2023, 5, 10));
-			c10.setHora(LocalTime.of(10, 30));
+			c10.setHora(LocalTime.of(10, 45));
 			c10.setPaciente(p10);
 			c10.setMedico(m3);
 			citaRepository.save(c10);
 
-			Consulta consulta1 = new Consulta();
-			consulta1.setStatus(1);
-			consulta1.setSalaEspera(1);
-			consulta1.setSalaConsulta(1);
-			consulta1.setPaciente(p1);
-			consulta1.setMedico(m1);
-			consulta1.setCita(c1);
-			consultaRepository.save(consulta1);
-
 			Consulta consulta2 = new Consulta();
-			consulta2.setStatus(1);
+			consulta2.setStatus(0);
 			consulta2.setSalaEspera(1);
 			consulta2.setSalaConsulta(1);
 			consulta2.setPaciente(p2);
@@ -222,7 +200,7 @@ public class MedconapiApplication {
 			consultaRepository.save(consulta2);
 
 			Consulta consulta3 = new Consulta();
-			consulta3.setStatus(1);
+			consulta3.setStatus(0);
 			consulta3.setSalaEspera(1);
 			consulta3.setSalaConsulta(1);
 			consulta3.setPaciente(p3);
@@ -231,7 +209,7 @@ public class MedconapiApplication {
 			consultaRepository.save(consulta3);
 
 			Consulta consulta4 = new Consulta();
-			consulta4.setStatus(1);
+			consulta4.setStatus(0);
 			consulta4.setSalaEspera(1);
 			consulta4.setSalaConsulta(1);
 			consulta4.setPaciente(p4);
@@ -240,7 +218,7 @@ public class MedconapiApplication {
 			consultaRepository.save(consulta4);
 
 			Consulta consulta5 = new Consulta();
-			consulta5.setStatus(1);
+			consulta5.setStatus(0);
 			consulta5.setSalaEspera(1);
 			consulta5.setSalaConsulta(2);
 			consulta5.setPaciente(p5);
@@ -249,7 +227,7 @@ public class MedconapiApplication {
 			consultaRepository.save(consulta5);
 
 			Consulta consulta6 = new Consulta();
-			consulta6.setStatus(1);
+			consulta6.setStatus(0);
 			consulta6.setSalaEspera(1);
 			consulta6.setSalaConsulta(2);
 			consulta6.setPaciente(p6);
@@ -258,7 +236,7 @@ public class MedconapiApplication {
 			consultaRepository.save(consulta6);
 
 			Consulta consulta7 = new Consulta();
-			consulta7.setStatus(1);
+			consulta7.setStatus(0);
 			consulta7.setSalaEspera(1);
 			consulta7.setSalaConsulta(2);
 			consulta7.setPaciente(p7);
@@ -267,7 +245,7 @@ public class MedconapiApplication {
 			consultaRepository.save(consulta7);
 
 			Consulta consulta8 = new Consulta();
-			consulta8.setStatus(1);
+			consulta8.setStatus(0);
 			consulta8.setSalaEspera(2);
 			consulta8.setSalaConsulta(3);
 			consulta8.setPaciente(p8);
@@ -276,7 +254,7 @@ public class MedconapiApplication {
 			consultaRepository.save(consulta8);
 
 			Consulta consulta9 = new Consulta();
-			consulta9.setStatus(1);
+			consulta9.setStatus(0);
 			consulta9.setSalaEspera(2);
 			consulta9.setSalaConsulta(3);
 			consulta9.setPaciente(p9);
@@ -285,7 +263,7 @@ public class MedconapiApplication {
 			consultaRepository.save(consulta9);
 
 			Consulta consulta10 = new Consulta();
-			consulta10.setStatus(1);
+			consulta10.setStatus(0);
 			consulta10.setSalaEspera(2);
 			consulta10.setSalaConsulta(3);
 			consulta10.setPaciente(p10);
@@ -294,5 +272,4 @@ public class MedconapiApplication {
 			consultaRepository.save(consulta10);
 		}
 	}
- 
 }

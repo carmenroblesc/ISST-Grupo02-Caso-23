@@ -7,25 +7,14 @@
 	    <link rel="stylesheet" th:href="@{/css/tema_light.css}">
 </head>
 <body>
-	<header>
-		<!-- En la sala de consulta no ponemos cabecera -->
-	</header>
 
 	<div class="container">
 		<div class="card bg-light">
 			<div class="card-header" style="background-color: #D8F3F2;">
-				<h3>SALA DE ESPERA Nº1</h3>
+				<h3>SALA DE ESPERA Nº</h3><h3 th:text="${salaEspera}"></h3>
 			</div>
 			<div class="card-body">
 				<table class="table table-striped">
-					<!-- No queremos cabecera en la tabla
-					<thead>
-						<tr>
-							<th th:text="Cipa"></th>
-							<th th:text="Estado"></th>
-							<th th:text="Consulta"></th>		
-						</tr>
-					</thead> -->
 					<tbody>
                         <tr th:each="Consulta: ${consultasEnTurno}">
 							<td th:text="${Consulta.paciente.idEspera}">JP-1234</td>

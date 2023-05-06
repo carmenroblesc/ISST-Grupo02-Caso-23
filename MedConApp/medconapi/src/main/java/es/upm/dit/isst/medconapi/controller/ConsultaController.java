@@ -67,6 +67,18 @@ public class ConsultaController {
         return (List<Consulta>) consultaRepository.findByStatus(id);  
     }
 
+    // devuelve lista con todas las consultas de una sala de espera en un estado 
+    @GetMapping("/consultas/sala/{idEspera}/{status}")
+    List<Consulta> readSala(@PathVariable Integer idEspera, @PathVariable Integer status) {
+        return (List<Consulta>) consultaRepository.findBySalaEsperaAndStatus(idEspera, status);  
+    }
+
+    // devuelve la consulta de un paciente 
+    @GetMapping("/consultas/pacientes/{id}")
+    Consulta readPaciente(@PathVariable String id) {
+      return (Consulta) consultaRepository.findByPaciente(id);
+    }
+
     //método auxliar para ordenar las consultas por hora
     private List<Consulta> ordenarConsultasPorHora(List<Consulta> consultas) {
         Comparator<Consulta> comparador = new Comparator<Consulta>() {
