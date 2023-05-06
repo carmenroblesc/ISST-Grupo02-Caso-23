@@ -20,20 +20,22 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public final String MEDCONMANAGER_STRING = "http://localhost:8083/";
     private RestTemplate restTemplate = new RestTemplate();
    
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Medico medico = medicoRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+        Medico medico = restTemplate.getForObject(MEDCONMANAGER_STRING + "/medicos/" + username, Medico.class);
+
+        if (medico != null) {
 
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("MEDICO"));
+        authorities.add(new SimpleGrantedAuthority("ROLE_MEDICO"));
         
         return User.builder()
-        .username(medico.getUsername())
+        .username(medico.getNcolegiado())
         .password(medico.getPassword())
-        .roles(medico.getRoles())
+        .roles(authorities.toString())
         .build();
+        }
+        throw new UsernameNotFoundException ("usuario no encontrado");
 
     }
 }

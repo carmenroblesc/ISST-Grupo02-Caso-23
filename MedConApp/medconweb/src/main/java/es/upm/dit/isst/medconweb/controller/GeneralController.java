@@ -67,6 +67,8 @@ public class GeneralController {
                 Paciente pacienteActualizado = citaActualizada.getPaciente();
                 // Pasar paciente a la vista
                 model.addAttribute("paciente", pacienteActualizado);
+                Consulta consulta = restTemplate.getForObject(MEDCONMANAGER_STRING + "consultas/pacientes/" + cipa, Consulta.class);
+                model.addAttribute("salaEspera", consulta.getSalaEspera());
             }
         } catch (Exception e) {
         }
@@ -75,21 +77,23 @@ public class GeneralController {
 
     // SALA DE ESPERA
 
-    @GetMapping("/sala")
-    public String sala(Model model) {
+    @GetMapping("/sala/{id}")
+    public String sala(@PathVariable(value = "id") Integer idSala, Model model) {
         List<Consulta> consultasEnEspera = new ArrayList<Consulta>();
         List<Consulta> consultasEnTurno = Arrays
-                .asList(restTemplate.getForEntity(MEDCONMANAGER_STRING + "/consultas/status/" + 1, Consulta[].class).getBody());
+                .asList(restTemplate.getForEntity(MEDCONMANAGER_STRING + "/consultas/sala/" + idSala + "/" + 1, Consulta[].class).getBody());
         List<Consulta> consultasEnEsperaAux = Arrays
-                .asList(restTemplate.getForEntity(MEDCONMANAGER_STRING + "/consultas/status/" + 0, Consulta[].class).getBody());
+                .asList(restTemplate.getForEntity(MEDCONMANAGER_STRING + "/consultas/sala/" + idSala + "/" + 0, Consulta[].class).getBody());
         for (Consulta consulta : consultasEnEsperaAux) {
             if (consulta.getPaciente().getPresente())
                 consultasEnEspera.add(consulta);
         }
         model.addAttribute("consultasEnTurno", consultasEnTurno);
         model.addAttribute("consultasEnEspera", consultasEnEspera);
+        model.addAttribute("salaEspera", idSala);
         return VISTA_SALA_ESPERA;
     }
+
 
     // MÉDICOS
 
@@ -101,15 +105,20 @@ public class GeneralController {
     }
 
     @PostMapping("/medicos/lista")
-    public String lista(Medico medico, BindingResult result, Model model) {
+    public String lista(Medico medicoaux, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return VISTA_LOGIN_MEDICO;
         }
-        String idMedico = medico.getNcolegiado();
+        String idMedico = medicoaux.getNcolegiado();
+        Medico medico = restTemplate.getForObject(MEDCONMANAGER_STRING + "/medicos/" + idMedico, Medico.class);
+    
+        if (!medicoaux.getPassword().equals(medico.getPassword())) {
+            return VISTA_LOGIN_MEDICO;
+        }
         List<Consulta> consultas = Arrays.asList(restTemplate
                 .getForEntity(MEDCONMANAGER_STRING + "/consultas/medicos/" + idMedico, Consulta[].class).getBody());
         // le pasamos a la vista todas las consultas del médico para que tenga la agenda completa
-        // debe ser la vista la que se encargue de marcar (por ejemplo con distintos colores) el estado de cada una
+        // debe ser la vista la que se encargue de marcar el estado de cada una
         model.addAttribute("consultas", consultas);
         return VISTA_LISTA;
     }
@@ -160,6 +169,5 @@ public class GeneralController {
     @GetMapping("/citas")
     public String citas() {
         return "GestionCitas";
-    }
-    
+    } 
 }
