@@ -23,12 +23,12 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) 
       throws AuthenticationException {
-        String idMedico = authentication.getPrincipal().toString(); 
-        Medico medico = restTemplate.getForObject(MEDCONMANAGER_STRING + "/medicos/" + idMedico, Medico.class);
+        String id = authentication.getPrincipal().toString(); 
+        Medico medico = restTemplate.getForObject(MEDCONMANAGER_STRING + "/medicos/" + id, Medico.class);
         if (medico != null) {
             List<SimpleGrantedAuthority> ga = new ArrayList<SimpleGrantedAuthority>();
             ga.add(new SimpleGrantedAuthority("ROLE_MEDICO"));
-            return new UsernamePasswordAuthenticationToken(idMedico, medico.getPassword(), ga);
+            return new UsernamePasswordAuthenticationToken(id, medico.getPassword(), ga);
         }
         throw new UsernameNotFoundException ("could not login");   
     }
