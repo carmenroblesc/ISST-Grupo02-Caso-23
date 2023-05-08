@@ -9,32 +9,24 @@
 	<link rel="stylesheet" th:href="@{/css/estilos.css}">
 	<link rel="stylesheet" th:href="@{/css/tema_light}">
 	<script>
+		var fechaInicio;
+		var intervalo;
+		var elapsedTime
 		// Verifica si hay una marca de tiempo almacenada
 		if (!localStorage.getItem('firstVisit')) {
-			// Si no hay ninguna marca de tiempo, crea una y la almacena en localStorage
 			localStorage.setItem('firstVisit', Date.now());
 		}
-
 		// Obtener la marca de tiempo de la primera visita del médico
 		const firstVisit = localStorage.getItem('firstVisit');
 
-		// Función para actualizar el contador de tiempo en la vista
 		function updateTimer() {
-			// Obtiene la marca de tiempo actual
 			const now = Date.now();
-
-			// Calcula la cantidad de tiempo transcurrido desde la primera visita del médico
 			const elapsed = now - firstVisit;
-
-			// Convierte la cantidad de tiempo transcurrido en formato horas:minutos:segundos
 			const hours = Math.floor(elapsed / 3600000);
 			const minutes = Math.floor((elapsed % 3600000) / 60000);
 			const seconds = Math.floor((elapsed % 60000) / 1000);
-
-			// Actualiza el contador de tiempo en la vista
 			document.getElementById('timer').innerHTML = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 		}
-
 		// Actualiza el contador de tiempo cada segundo
 		setInterval(updateTimer, 1000);
 	</script>
@@ -104,11 +96,45 @@
 								<a th:href="@{/finalizar/} + ${Consulta.id}" class="btn btn-primary"
 									style="font-weight:bold; border: 1px solid black;">FINALIZAR</a>
 							</td>
+							<th:block th:if="${Consulta.status == 1}">
+								<td id="contadorInicio">00:00:00</td>
+								<script>
+									function iniciarContador() {
+										// Guarda la fecha de inicio
+										fechaInicio = new Date();
+										// Cada segundo, actualiza el contador
+										intervalo = setInterval(updateTimer, 1000);
+									}
+									// Función para actualizar el contador de tiempo en la vista
+									function updateTimer() {
+										const now = Date.now();
+										elapsedTime = now - fechaInicio;
+										// Convierte la cantidad de tiempo transcurrido en formato horas:minutos:segundos
+										const hours = Math.floor(elapsedTime / 3600000);
+										const minutes = Math.floor((elapsedTime % 3600000) / 60000);
+										const seconds = Math.floor((elapsedTime % 60000) / 1000);
+										// Actualiza el contador de tiempo en la vista
+										document.getElementById('contadorInicio').innerHTML = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+									}
+									iniciarContador()
+								</script>
+							</th:block>
+							<th:block th:if="${Consulta.status == 2}">
+								<td th:id="contadorFinal">00:00:00</td>
+								<script>
+									function detenerContador() {
+										// Detiene el intervalo del contado
+										clearInterval(intervalo);
+									}
+									detenerContador()
+								</script>
+							</th:block>
 						</tr>
 					</tbody>
 				</table>
 			</div>
 		</div>
-	</div>		
+	</div>
 </body>
+
 </html>

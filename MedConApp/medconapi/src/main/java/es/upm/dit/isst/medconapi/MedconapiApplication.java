@@ -25,7 +25,7 @@ public class MedconapiApplication {
 		SpringApplication.run(MedconapiApplication.class, args);
 	}
 	
-	// comentar para realizar las pruebas 
+	// Comentar para realizar las pruebas de JUnit 
 	@Component
 	class dataLoader implements CommandLineRunner {
 		@Autowired

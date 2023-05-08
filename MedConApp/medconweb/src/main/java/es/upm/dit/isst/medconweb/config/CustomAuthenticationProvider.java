@@ -30,6 +30,11 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             ga.add(new SimpleGrantedAuthority("ROLE_MEDICO"));
             return new UsernamePasswordAuthenticationToken(id, medico.getPassword(), ga);
         }
+        else if (id.contains("admin")) {
+            List<SimpleGrantedAuthority> ga = new ArrayList<SimpleGrantedAuthority>();
+            ga.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+            return new UsernamePasswordAuthenticationToken(id, "", ga);
+        }
         throw new UsernameNotFoundException ("could not login");   
     }
 
