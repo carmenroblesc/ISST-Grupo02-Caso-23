@@ -57,14 +57,14 @@
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/qrcode-generator/qrcode.js"></script>
-  <script>
+  <script th:inline="javascript">
     window.onload = function() {
       var qr = qrcode(0, 'H');
-      qr.addData("${paciente.idEspera}");
+      qr.addData(/*[[${paciente.idEspera}]]*/);
       qr.make();
-      var qrImage = qr.createImgTag(2);
+      var qrImage = qr.createImgTag(3);
       document.getElementById("qr-container").innerHTML = qrImage;
     };
-  </script>
+</script>
 </body>
 </html>
