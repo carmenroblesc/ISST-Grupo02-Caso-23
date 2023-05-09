@@ -19,6 +19,7 @@ class MedconwebApplicationTests {
 
 	@Test
 	void authenticateTest() {
+
 		CustomAuthenticationProvider customAuthProvider = new CustomAuthenticationProvider();
 		customAuthProvider.restTemplate = new RestTemplate();
 
