@@ -96,11 +96,8 @@ public class GeneralController {
 
 
     // MÉDICOS
-    /** @GetMapping("/medicos")
-    public String login_med() {
-       return "login";
-    }
-  
+
+    /** 
     @GetMapping("/medicos/lista")
     public String lista(Model model, Principal principal) {
         String idMedico = principal.getName();
@@ -111,8 +108,8 @@ public class GeneralController {
         model.addAttribute("consultas", consultas);
         return VISTA_LISTA;
     }
-
     **/
+    
     @GetMapping("/medicos")
     public String login_med(Map<String, Object> model) {
        Medico medico = new Medico();
