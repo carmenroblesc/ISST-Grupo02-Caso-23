@@ -11,5 +11,4 @@ public class MedconwebApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(MedconwebApplication.class, args);
 	}
-
 }
